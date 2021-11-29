@@ -115,8 +115,8 @@ The containers need to be built for the first time:
 (set -a; source .env; docker-compose up --build)
 ```
 - Start containers: `bin/start`
-- Stop containers: `bin/start`
-- Down containers (this will terminate and remove containers): `bin/start`
+- Stop containers: `bin/stop`
+- Down containers (this will remove and destroy containers): `bin/start`
 - Restart containers (e.g. after a php.ini change): `bin/restart`
 
 
