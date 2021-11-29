@@ -1,0 +1,4 @@
+#!/bin/bash
+source .env
+current_date = `date +"%Y_%m_%d"`
+docker exec mysql bash -c "exec mysqldump --databases "${APP_DB_NAME}" -uroot -p"${APP_DB_ROOT_PASSWORD}" > ../src/DB/dump_$(current_date).sql"

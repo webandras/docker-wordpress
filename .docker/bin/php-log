@@ -1,0 +1,9 @@
+#!/bin/bash
+ERROR_LOG_PATH="$(pwd)/web/log/error.log"
+
+echo "==============================================="
+echo "PHP ERROR LOG:"
+echo "==============================================="
+tail -20 "${ERROR_LOG_PATH}" | sed 's/\\n/\n/g'
+echo "==============================================="
+exit

@@ -1,0 +1,5 @@
+#!/bin/bash
+source .env
+# you can not run this as root
+xdg-open http://localhost:"${PHPMYADMIN_PORT}"/
+exit

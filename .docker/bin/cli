@@ -1,0 +1,5 @@
+#!/bin/bash
+source .env
+
+# Enter wordpress container
+docker exec -it ${APP_NAME}-wordpress "$@"

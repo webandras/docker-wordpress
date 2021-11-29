@@ -1,0 +1,7 @@
+#!/bin/bash
+source .env
+echo "==============================================="
+echo "MySQL error log:"
+echo "==============================================="
+docker logs "${APP_NAME}"-mysql --tail 20 --details
+exit

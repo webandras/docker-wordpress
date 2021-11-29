@@ -1,0 +1,5 @@
+#!/bin/bash
+source .env
+# you can not run this as root
+xdg-open http://localhost:"${WORDPRESS_PORT}"
+exit
