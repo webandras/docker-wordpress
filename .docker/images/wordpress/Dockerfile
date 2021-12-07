@@ -24,4 +24,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # Copy modified ini file to be able to use mailcatcher smtp server
 # sendmail_path = /usr/bin/env catchmail -f wordpress@local.test
-COPY php.ini-development /usr/local/etc/php/
+COPY php.ini-development /usr/local/etc/php
+
+# Copy apache conf file
+COPY ./conf/000-default.conf  /etc/apache2/sites-available/000-default.conf
