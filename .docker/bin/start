@@ -1,4 +1,5 @@
 #!/bin/bash
 set -a
 source .env
+systemctl stop apache2
 docker-compose up "$@"
