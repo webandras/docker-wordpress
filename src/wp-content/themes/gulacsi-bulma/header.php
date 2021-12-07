@@ -20,7 +20,6 @@
 	<link rel="profile" href="https://gmpg.org/xfn/11">
 
 	<?php wp_head(); ?>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 </head>
 
 <body <?php body_class(); ?>>
@@ -53,25 +52,27 @@
 				// Get the queried object and sanitize it
 				$currentPage = sanitize_post($GLOBALS['wp_the_query']->get_queried_object());
 				// Get the page slug
-				$currentPageSlug = $currentPage->post_name;
-				$currentPageUrl = esc_url(get_bloginfo('url') . '/' . $currentPageSlug . '/');
+				$currentPageSlug = $currentPage ? $currentPage->post_name : null;
+				$currentPageUrl = esc_url(get_bloginfo('url') . '/' . ($currentPageSlug ? $currentPageSlug : '') . '/');
 				?>
 				<div id="primary-navbar" class="navbar-menu">
 					<div class="navbar-start">
 						<?php
-						foreach ($menuItems as $item) {
-							$url = $item->url;
-							$title = $item->title;
+						if ($menuItems) {
+							foreach ($menuItems as $item) {
+								$url = $item->url;
+								$title = $item->title;
 						?>
-							<?php if (strtolower($item->post_name) === 'home' && (is_home() || is_front_page())) { ?>
-								<a href="<?php echo esc_url($url); ?>" class="navbar-item is-active">
-									<?php esc_html_e($title) ?>
-								</a>
-							<?php } else { ?>
-								<a href="<?php echo esc_url($url); ?>" class="navbar-item<?php echo ($currentPageUrl === $url) ? " is-active" : ""; ?>">
-									<?php esc_html_e($title) ?>
-								</a>
-							<?php } ?>
+								<?php if (strtolower($item->post_name) === 'home' && (is_home() || is_front_page())) { ?>
+									<a href="<?php echo esc_url($url); ?>" class="navbar-item is-active">
+										<?php esc_html_e($title) ?>
+									</a>
+								<?php } else { ?>
+									<a href="<?php echo esc_url($url); ?>" class="navbar-item<?php echo ($currentPageUrl === $url) ? " is-active" : ""; ?>">
+										<?php esc_html_e($title) ?>
+									</a>
+								<?php } ?>
+							<?php	} ?>
 						<?php	} ?>
 						<div class="navbar-item has-dropdown is-hoverable">
 							<a class="navbar-link">
@@ -110,26 +111,4 @@
 					</div>
 				</div>
 			</nav><!-- #site-navigation -->
-
-			<div class="site-branding">
-				<div class="hero">
-					<?php
-
-					if (is_front_page() && is_home()) :
-					?>
-						<h1 class="site-title"><a href="<?php echo esc_url(home_url('/')); ?>" rel="home"><?php bloginfo('name'); ?></a></h1>
-					<?php
-					else :
-					?>
-						<p class="site-title"><a href="<?php echo esc_url(home_url('/')); ?>" rel="home"><?php bloginfo('name'); ?></a></p>
-					<?php
-					endif;
-					$gulacsi_bulma_description = get_bloginfo('description', 'display');
-					if ($gulacsi_bulma_description || is_customize_preview()) :
-					?>
-						<p class="site-description"><?php echo $gulacsi_bulma_description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-																				?></p>
-					<?php endif; ?>
-				</div><!-- .site-branding -->
-			</div>
 		</header><!-- #masthead -->
