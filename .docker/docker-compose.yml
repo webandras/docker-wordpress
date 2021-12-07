@@ -7,13 +7,13 @@ services:
     container_name: ${APP_NAME}-db
     volumes: # data to map to the container
       #- ../src/DB:/docker-entrypoint-initdb.d # where to find the db dump data
-      - db_data:/var/lib/mysql
+      - wordpress_db_data:/var/lib/mysql
     restart: unless-stopped
     environment: # mysql options
-      - MYSQL_ROOT_PASSWORD=${APP_DB_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${APP_DB_NAME}
-      - MYSQL_USER=${APP_DB_USER}
-      - MYSQL_PASSWORD=${APP_DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
 
     # for mysql 8.0, change autentication to native password (legacy)
     command: [
@@ -22,26 +22,27 @@ services:
       '--collation-server=utf8mb4_unicode_ci'
     ]
 
-
   wordpress:
     container_name: ${APP_NAME}-wordpress
     depends_on:
       - db
     build:
       context: ./images/wordpress
+      args:
+        - SERVER_NAME=${APP_NAME}.local
       dockerfile: Dockerfile # need to install the wp-cli that is missing from the official image
     ports:
       - "80:80"
     restart: unless-stopped
     environment:
       - WORDPRESS_DB_HOST=db:${MYSQL_PORT}
-      - WORDPRESS_DB_USER=${APP_DB_USER}
-      - WORDPRESS_DB_PASSWORD=${APP_DB_PASSWORD} # matches the password set in the db container
-      - WORDPRESS_DB_NAME=${APP_DB_NAME}
+      - WORDPRESS_DB_USER=${DB_USER}
+      - WORDPRESS_DB_PASSWORD=${DB_PASSWORD} # matches the password set in the db container
+      - WORDPRESS_DB_NAME=${DB_NAME}
       - WORDPRESS_DEBUG=true
     extra_hosts:
-     - "${APP_DB_NAME}.local:127.0.0.1"
-    hostname: ${APP_DB_NAME}.local
+     - "${APP_NAME}.local:127.0.0.1"
+    hostname: ${APP_NAME}.local
     domainname: local 
     volumes:
       - ../src:/var/www/html:cached
@@ -81,4 +82,4 @@ services:
       - "1080:1080"
 
 volumes:
-    db_data: {} # persist db data in native named volume
+  wordpress_db_data: {} # persist db data in native named volume
