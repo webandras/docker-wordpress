@@ -3,5 +3,5 @@ source .env
 echo "==============================================="
 echo "MySQL error log:"
 echo "==============================================="
-docker logs "${APP_NAME}"-mysql --tail 20 --details
+docker logs "${APP_NAME}"-mysql --tail ${TAIL_COUNT} --details
 exit
