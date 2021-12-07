@@ -27,7 +27,7 @@ services:
     depends_on:
       - db
     build:
-      context: ./images/wordpress
+      context: ./.docker/images/wordpress
       args:
         - SERVER_NAME=${APP_NAME}.local
       dockerfile: Dockerfile # need to install the wp-cli that is missing from the official image
@@ -45,7 +45,7 @@ services:
     hostname: ${APP_NAME}.local
     domainname: local 
     volumes:
-      - ../src:/var/www/html:cached
+      - ./src:/var/www/html:cached
 
 #    nginx:
 #      image: nginx:latest

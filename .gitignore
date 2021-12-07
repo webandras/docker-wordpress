@@ -1,0 +1,40 @@
+### IntelliJ
+.idea
+*.iml
+
+# Only test credentials inside
+#.env
+
+### Composer
+src/composer.phar
+src/composer.lock
+src/vendor/
+
+### Node
+src/node_modules
+
+### Docker
+ntunnel-*.php
+
+### Wordpress
+src/DB/*
+!src/DB/wp-config.php
+
+src/wp-admin
+src/wp-includes
+src/wp-content/themes/*
+!src/wp-content/themes/gulacsi-bulma
+src/wp-content/plugins/*
+!src/wp-content/plugins/reactwp-blocks
+
+# only folders
+src/wp-content/backups-dup-lite/*
+src/wp-content/cache/*
+src/wp-content/languages/*
+src/wp-content/upgrade/*
+src/wp-content/uploads/*
+
+# wordfence logs
+src/wp-content/wflogs/*
+
+src/wp-content/uploads/wc-logs/
