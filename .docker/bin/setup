@@ -2,5 +2,4 @@
 source .env
 
 # Install wordpress database
-bin/cli bash -c "wp core install --url=${APP_DOMAIN} --title=${APP_NAME} --admin_user=${APP_DB_USER} --admin_password=${APP_DB_PASSWORD} --admin_email=${APP_ADMIN_EMAIL}"
-
+bin/cli bash -c "wp core install --url=${APP_DOMAIN} --title=${APP_NAME} --admin_user=${DB_USER} --admin_password=${DB_PASSWORD} --admin_email=${ADMIN_EMAIL}"
