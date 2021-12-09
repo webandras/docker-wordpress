@@ -66,8 +66,8 @@ wp config set "DISALLOW_FILE_MODS" true --type=constant --add --raw
 
 ## Customisations made to wordpress:latest image
 
-- wp-cli, and composer 2 was installed. (The official image does not hav it. There is a wordpress:cli image, but it only contains the wp-cli. In this image, apache2 is also configured. This is the reason it is used here.)
-- For convinient work in the terminal, vim and nano is also installed. Use the text editor of your choice.
+- wp-cli, and composer 2 was installed. (The official image does not have it. There is a wordpress:cli image, but it only contains the wp-cli. In this image, apache2 is also configured. This is the reason it is used here.)
+- For convenient work in the terminal, vim and nano is also installed. Use the text editor of your choice.
 - php.ini setting change for mailcatcher (you can change the email to any fake one)
 `sendmail_path = /usr/bin/env catchmail -f wordpress@local.test`
 
@@ -76,7 +76,7 @@ wp config set "DISALLOW_FILE_MODS" true --type=constant --add --raw
 
 Core, plugins and themes are installed/handled/updated/deleted with composer to keep track of the dependency versions.
 
-Do not update wordpress/themes/plugins with the wp-cli, because it will lead to inconsistencies in versions defined in composer.json and the actual versions!
+Do not update wordpress/themes/plugins with the wp-cli, because it will lead to inconsistencies in versions defined in composer.json and the actual versions installed!
 
 TODO: Make sure to disable wp-cli commands that modify themes, or plugins.
 
@@ -115,8 +115,8 @@ The containers need to be built for the first time:
 (set -a; source .env; docker-compose up --build)
 ```
 - Start containers: `bin/start`
-- Stop containers: `bin/start`
-- Down containers (this will terminate and remove containers): `bin/start`
+- Stop containers: `bin/stop`
+- Down containers (this will remove and destroy containers): `bin/start`
 - Restart containers (e.g. after a php.ini change): `bin/restart`
 
 
