@@ -1,6 +1,8 @@
 # WordPress Docker development template
 
 This template is made for local development only.
+- *TODO: put wp core files into separate folder (except for wp-content)*
+- *TODO: use composer for installing WordPress instead*
 
 The following Docker images are included:
 - [wordpress:latest](https://hub.docker.com/_/wordpress) (apache2 webserver included)
