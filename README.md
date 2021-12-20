@@ -1,6 +1,8 @@
 # WordPress Docker development template
 
 This template is made for local development only.
+- *TODO: put wp core files into separate folder (except for wp-content)*
+- *TODO: use composer for installing WordPress instead*
 
 The following Docker images are included:
 - [wordpress:latest](https://hub.docker.com/_/wordpress) (apache2 webserver included)
@@ -14,25 +16,63 @@ The following Docker images are included:
 - src: the source code goes here
 
 
-## Install a new WordPress site
+## Install a new, or setup an existing WordPress site
 
-1. cd to .docker folder
+### HTTPS
 
-2. Set your environment variables in .docker/.env (the defaults will also work)
-
-3. Build docker containers the first time
-
+1. Set your environment variables in `.docker/.env`, change `APP_NAME`
+2. Setup ssl for your custom domain ${APP_NAME}.local`
 ```shell
-(set -a; source .env; docker-compose up --build)
+bin/setup-ssl
 ```
 
-4. WordPress database installation with wp-cli. Run:
+3. Add domain alias for 127.0.0.1 (e.g. `vim /etc/hosts`)
+4. Build docker project:
+```shell
+(set -a;source .env;docker-compose -f docker-compose-ssl.yml up --build)
+```
 
+5. WordPress database installation with wp-cli, import db for existing sites
+
+- For a new site run:
 ```shell
 bin/setup
 ```
+- For an existing site, import db dump:
 
-5. Install composer packages (composer.json is in the `/src` folder). Run
+```shell
+bin/mysql-import
+```
+For db dump should be placed into this folder with the same filename: `src/db/db.sql`
+
+For existing sites, replace domain in database tables (enter container first with bash):
+
+```shell
+bin/bash
+wp search-replace 'https://example.com' 'https://example.local' --skip-columns=guid
+```
+Overwrite wp-content/ with yours.
+
+No need to change any additional files. The `wp-config.php` loads all credentials from the `.env` file. Every bash script in bin folder loads environment variables from `.env`.
+
+Create a new admin user if needed, example:
+
+```shell
+bin/bash
+wp user create andras andras.gulacsi@drb.services --role=administrator --user_pass=Andras123!
+```
+
+### HTTP
+
+Installation is almost the same as for https. We just need to use another docker-compose file
+
+```shell
+(set -a;source .env;docker-compose -f docker-compose.yml up --build --remove-orphans)
+```
+
+## Configure WordPress local site
+
+1. Install composer packages (composer.json is in the `/src` folder). Run
 
 ```shell
 bin/composer install
@@ -42,9 +82,9 @@ TODO: Installing wordpress (that is already installed before) with composer retu
 
 ! IMPORTANT: If composer overwrites your wp-config.php, just replace it with the copy in `DB` folder (it loads the env vars from your .env file in `.docker' folder)
 
-6. Add/update wp-config.php constants, values etc.
+2. Add/update wp-config.php constants, values etc.
 
-```shell
+```bash
 # List all currently defined configuration props 
 wp config list
 
@@ -82,7 +122,7 @@ TODO: Make sure to disable wp-cli commands that modify themes, or plugins.
 
 Modifying files on the wp admin can be disabled that will make changes to core, themes and plugins impossible on the admin dashboard.
 
-```
+```bash
 bin/bash
 wp config set "DISALLOW_FILE_MODS" true --type=constant --add --raw
 ```
@@ -93,14 +133,17 @@ wp config set "DISALLOW_FILE_MODS" true --type=constant --add --raw
 - Import database: `bin/mysql-import`
 - Export database: `bin/mysql-dump` 
 
-All sql files should be put into `src/DB` folder.
+All sql files should be put into `src/db` folder.
 
 Note: Auto-importing db dump is currently disabled. In docker-compose.yml, this is commented out:
-`../src/DB:/docker-entrypoint-initdb.d # where to find the db dump data`
+`../src/db:/docker-entrypoint-initdb.d # where to find the db dump data`
 
-Make sure to replace urls in data tables (like https://example.com -> http://localhost:8000, or vice versa if needed)
+Make sure to replace urls in data tables (like https://example.com -> http://localhost:8000). The easiest way is to use the wp-cli:
 
-Change wp-config.php database credentials if needed.
+```shell
+bin/bash
+wp search-replace 'https://example.com' 'https://example.local' --skip-columns=guid
+```
 
 PhpMyAdmin service is accessible here: http://localhost:1337
 
@@ -112,17 +155,21 @@ Make sure the host ports that are binded to our container's internal ports are n
 The containers need to be built for the first time:
 
 ```bash
-(set -a; source .env; docker-compose up --build)
+(set -a;source .env;docker-compose -f docker-compose.yml up --build --remove-orphans)
 ```
+```bash
+(set -a;source .env;docker-compose -f docker-compose-ssl.yml up --build --remove-orphans)
+```
+
 - Start containers: `bin/start`
 - Stop containers: `bin/stop`
-- Down containers (this will remove and destroy containers): `bin/start`
+- Down containers (this will remove and destroy containers): `bin/down`
 - Restart containers (e.g. after a php.ini change): `bin/restart`
 
 
 ## Bash scripts in `bin` folder
 
-Useful and makes it faster to run common tasks.
+Useful and makes it faster to run common tasks. Check them out.
 
 
 ## Useful WP CLI commands
