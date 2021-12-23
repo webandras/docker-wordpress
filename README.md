@@ -1,8 +1,10 @@
 # WordPress Docker development template
 
 This template is made for local development only.
-- *TODO: put wp core files into separate folder (except for wp-content)*
-- *TODO: use composer for installing WordPress instead*
+
+There are 2 versions of the environment:
+- WordPress Core files moved into a separate folder (referred to as **wp_core_separate**) -> on `master-new` branch!
+- The WordPress Core files in the root folder (referred to as **wp_core_default**) -> on `master` branch!
 
 The following Docker images are included:
 - [wordpress:latest](https://hub.docker.com/_/wordpress) (apache2 webserver included)
@@ -34,10 +36,16 @@ bin/setup-ssl
 
 5. WordPress database installation with wp-cli, import db for existing sites
 
-- For a new site run:
+- For a new site run (**wp_core_default**):
 ```shell
 bin/setup
 ```
+
+- For a new site run (**wp_core_separate**):
+```shell
+bin/setup-wp
+```
+
 - For an existing site, import db dump:
 
 ```shell
@@ -67,7 +75,7 @@ wp user create andras andras.gulacsi@drb.services --role=administrator --user_pa
 Installation is almost the same as for https. We just need to use another docker-compose file
 
 ```shell
-(set -a;source .env;docker-compose -f docker-compose.yml up --build --remove-orphans)
+(set -a;source .env;docker-compose -f docker-compose.yml up --build)
 ```
 
 ## Configure WordPress local site
@@ -77,12 +85,12 @@ Installation is almost the same as for https. We just need to use another docker
 ```shell
 bin/composer install
 ```
+! NOTICE: Installing or updating WordPress with composer returns an non-breaking error. However, plugins and themes are installed properly despite of the error. Need to be resolved.
 
-TODO: Installing wordpress (that is already installed before) with composer returns an error. However, plugins and themes are installed properly despite of the error. Need to be resolved.
+! IMPORTANT: (**wp_core_default**) -> If composer overwrites your `wp-config.php`, just replace it with the copy in `.docker/images/wordpress` folder (it loads the env vars from your .env file in `.docker` folder). This does not apply for the **wp_core_separate** case (install path is the wp folder, but the wp-config file used is in the root (customized with `bin/setup-wp` script).
 
-! IMPORTANT: If composer overwrites your wp-config.php, just replace it with the copy in `DB` folder (it loads the env vars from your .env file in `.docker' folder)
 
-2. Add/update wp-config.php constants, values etc.
+2. Add/update wp-config.php constants, values etc. (optional, not needed generally)
 
 ```bash
 # List all currently defined configuration props 
@@ -110,6 +118,7 @@ wp config set "DISALLOW_FILE_MODS" true --type=constant --add --raw
 - For convenient work in the terminal, vim and nano is also installed. Use the text editor of your choice.
 - php.ini setting change for mailcatcher (you can change the email to any fake one)
 `sendmail_path = /usr/bin/env catchmail -f wordpress@local.test`
+- upload_max_filesize = 20M
 
 
 ## Composer
@@ -118,9 +127,7 @@ Core, plugins and themes are installed/handled/updated/deleted with composer to 
 
 Do not update wordpress/themes/plugins with the wp-cli, because it will lead to inconsistencies in versions defined in composer.json and the actual versions installed!
 
-TODO: Make sure to disable wp-cli commands that modify themes, or plugins.
-
-Modifying files on the wp admin can be disabled that will make changes to core, themes and plugins impossible on the admin dashboard.
+Modifying files on the wp-admin can be disabled that will make changes to core, themes and plugins impossible on the admin dashboard.
 
 ```bash
 bin/bash
@@ -133,12 +140,14 @@ wp config set "DISALLOW_FILE_MODS" true --type=constant --add --raw
 - Import database: `bin/mysql-import`
 - Export database: `bin/mysql-dump` 
 
-All sql files should be put into `src/db` folder.
+All sql files should be put into the `db` folder.
 
 Note: Auto-importing db dump is currently disabled. In docker-compose.yml, this is commented out:
-`../src/db:/docker-entrypoint-initdb.d # where to find the db dump data`
+`./db:/docker-entrypoint-initdb.d # where to find the db dump data`
 
-Make sure to replace urls in data tables (like https://example.com -> http://localhost:8000). The easiest way is to use the wp-cli:
+It is a better idea to use the `bin/mysql-import` script instead.
+
+Make sure to replace urls in data tables (like https://example.com -> https://example.local). The easiest way is to use the wp-cli:
 
 ```shell
 bin/bash
@@ -155,16 +164,16 @@ Make sure the host ports that are binded to our container's internal ports are n
 The containers need to be built for the first time:
 
 ```bash
-(set -a;source .env;docker-compose -f docker-compose.yml up --build --remove-orphans)
+(set -a;source .env;docker-compose -f docker-compose.yml up --build)
 ```
 ```bash
-(set -a;source .env;docker-compose -f docker-compose-ssl.yml up --build --remove-orphans)
+(set -a;source .env;docker-compose -f docker-compose-ssl.yml up --build)
 ```
 
 - Start containers: `bin/start`
 - Stop containers: `bin/stop`
 - Down containers (this will remove and destroy containers): `bin/down`
-- Restart containers (e.g. after a php.ini change): `bin/restart`
+- Restart containers: `bin/restart`
 
 
 ## Bash scripts in `bin` folder
