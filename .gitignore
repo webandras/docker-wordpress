@@ -11,21 +11,21 @@ src/composer.lock
 src/vendor/
 
 ### Node
+node_modules
 src/node_modules
+
+### Database
+db/*
 
 ### Docker
 ntunnel-*.php
 
 ### Wordpress
-src/DB/*
-!src/DB/wp-config.php
-
-src/wp-admin
-src/wp-includes
+src/wp
 src/wp-content/themes/*
+!src/wp-content/themes/twentytwentyone
 !src/wp-content/themes/gulacsi-bulma
 src/wp-content/plugins/*
-!src/wp-content/plugins/reactwp-blocks
 
 src/wp-content/backups-dup-lite/*
 src/wp-content/cache/*
@@ -37,21 +37,3 @@ src/wp-content/uploads/*
 src/wp-content/wflogs/*
 
 src/wp-content/uploads/wc-logs/
-
-#src/index.php
-#src/wp-blog-header.php
-src/license.txt
-src/readme.html
-src/wp-activate.php
-src/wp-comments-post.php
-src/wp-config-sample.php
-src/wp-cron.php
-src/wp-links-opml.php
-src/wp-load.php
-src/wp-login.php
-src/wp-mail.php
-src/wp-settings.php
-src/wp-signup.php
-src/wp-trackback.php
-src/xmlrpc.php
-
