@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # only for development!!!
-chmod 644 .htaccess
-chmod 644 index.php
-chmod 644 wp-config.php
+chmod 644 src/.htaccess
+chmod 644 src/index.php
+chmod 644 src/wp-config.php
 
-chmod 755 wp/
-find wp/ -type d -exec chmod 755 {} \;  # Change directory permissions rwxr-xr-x
-find wp/ -type f -exec chmod 644 {} \;  # Change file permissions rw-r--r--
+chmod 755 src/wp/
+find src/wp/ -type d -exec chmod 755 {} \;  # Change directory permissions rwxr-xr-x
+find src/wp/ -type f -exec chmod 644 {} \;  # Change file permissions rw-r--r--
