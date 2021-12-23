@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# change the owner for apache2
+chown www-data:www-data wp/  -R  

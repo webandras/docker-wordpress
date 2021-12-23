@@ -1,5 +1,5 @@
 #!/bin/bash
+set -a
 source .env
 
-# Install wordpress database
 bin/cli bash -c "wp core install --url=${APP_DOMAIN} --title=${APP_NAME} --admin_user=${DB_USER} --admin_password=${DB_PASSWORD} --admin_email=${ADMIN_EMAIL}"

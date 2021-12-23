@@ -1,4 +1,5 @@
 #!/bin/bash
+set -a
 source .env
 
 cd ./.docker/images/nginx/ssl

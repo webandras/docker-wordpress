@@ -1,3 +1,14 @@
 #!/bin/bash
+set -a
+source .env
+
 systemctl stop apache2
-docker-compose up "$@"
+
+bin/fix-permissions
+
+if [ "${WP_PROTOCOL}" == "https" ];
+then
+  docker-compose -f docker-compose-ssl.yml up "$@"
+else
+  docker-compose -f docker-compose.yml up "$@"
+fi
