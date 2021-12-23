@@ -23,7 +23,7 @@ The following Docker images are included:
 ### HTTPS
 
 1. Set your environment variables in `.docker/.env`, change `APP_NAME`
-2. Setup ssl for your custom domain ${APP_NAME}.local`
+2. Setup ssl for your custom domain `${APP_NAME}.local`
 ```shell
 bin/setup-ssl
 ```
@@ -51,7 +51,7 @@ bin/setup-wp
 ```shell
 bin/mysql-import
 ```
-For db dump should be placed into this folder with the same filename: `src/db/db.sql`
+The db dump should be placed into this folder with the same filename: `db/db.sql`
 
 For existing sites, replace domain in database tables (enter container first with bash):
 
