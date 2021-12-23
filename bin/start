@@ -5,6 +5,7 @@ source .env
 systemctl stop apache2
 
 bin/fix-permissions
+bin/fix-owner
 
 if [ "${WP_PROTOCOL}" == "https" ];
 then
