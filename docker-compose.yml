@@ -6,8 +6,8 @@ services:
     image: mysql:8.0
     container_name: ${APP_NAME}-db
     volumes: # data to map to the container
-      #- ../src/DB:/docker-entrypoint-initdb.d # where to find the db dump data
-      - wordpress_db_data:/var/lib/mysql
+      #- ./db:/docker-entrypoint-initdb.d # where to find the db dump data
+      - wordpress_data:/var/lib/mysql
     restart: unless-stopped
     environment: # mysql options
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
@@ -69,4 +69,4 @@ services:
 
 
 volumes:
-  wordpress_db_data: {} # persist db data in native named volume
+  wordpress_data: {} # persist db data in native named volume
