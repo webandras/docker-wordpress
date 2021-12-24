@@ -6,47 +6,54 @@ echo "Wordpress: installing.."
 
 chmod -R 777 src/
 
-# make directories
-mkdir src/wp/ \
- || exit 1
+if [ "${WP_CORE_SEPARATE}" == "true"];
+then
+  # make directories
+  mkdir src/wp/ \
+  || exit 1
 
-# move all Wordpress core files into src/wp
-mv src/wp-admin src/wp-includes src/wp-content "${WP_DIRECTORY}"/; \
-mv src/*.php src/license.txt src/readme.html "${WP_DIRECTORY}"/;
+  # move all Wordpress core files into src/wp
+  mv src/wp-admin src/wp-includes src/wp-content "${WP_DIRECTORY}"/; \
+  mv src/*.php src/license.txt src/readme.html "${WP_DIRECTORY}"/;
 
-mkdir -p src/wp-content/ \
-         src/wp-content/themes/ \
-         src/wp-content/plugins/ \
-         src/wp-content/uploads/ \
- || exit 1
+  mkdir -p src/wp-content/ \
+          src/wp-content/themes/ \
+          src/wp-content/plugins/ \
+          src/wp-content/uploads/ \
+  || exit 1
 
-# copy basic themes
-cp -a "${WP_DIRECTORY}"/wp-content/themes/* src/wp-content/themes/
+  # copy basic themes
+  cp -a "${WP_DIRECTORY}"/wp-content/themes/* src/wp-content/themes/
 
-# copy the customized htaccess file for wp
-cp -a .docker/images/wordpress/.htaccess src/
+  # copy the customized htaccess file for wp
+  cp -a .docker/images/wordpress/.htaccess src/
 
-# copy/move config and index files to the root and change the subdirectory
-mv "${WP_DIRECTORY}/wp-config.php" src/wp-config.php
-sed -i "s/__DIR__ . '\/'/__DIR__ . '\/wp\/'/g" src/wp-config.php
-cp "${WP_DIRECTORY}/index.php" src/index.php
-sed -i "s/__DIR__ . '\/wp-blog-header.php'/__DIR__ . '\/wp\/wp-blog-header.php'/g" src/index.php
+  # copy/move config and index files to the root and change the subdirectory
+  mv "${WP_DIRECTORY}/wp-config.php" src/wp-config.php
+  sed -i "s/__DIR__ . '\/'/__DIR__ . '\/wp\/'/g" src/wp-config.php
+  cp "${WP_DIRECTORY}/index.php" src/index.php
+  sed -i "s/__DIR__ . '\/wp-blog-header.php'/__DIR__ . '\/wp\/wp-blog-header.php'/g" src/index.php
 
-# force 'direct' filesystem method for WP (automatic detection doesn't work well in a Docker container)
-bin/cli bash -c "wp config set 'FS_METHOD' \"'direct'\" --type=constant --add --raw"
-# disable core/plugin/theme modification
-# bin/cli bash -c "wp config set 'DISALLOW_FILE_MODS' true --type=constant --add --raw"
+  # force 'direct' filesystem method for WP (automatic detection doesn't work well in a Docker container)
+  bin/cli bash -c "wp config set 'FS_METHOD' \"'direct'\" --type=constant --add --raw"
+  # disable core/plugin/theme modification
+  # bin/cli bash -c "wp config set 'DISALLOW_FILE_MODS' true --type=constant --add --raw"
 
-# "move" wp-content directory to the root
-bin/cli bash -c "wp config set 'WP_CONTENT_DIR' \"dirname( __FILE__ ) . '/wp-content'\" --type=constant --add --raw"
+  # "move" wp-content directory to the root
+  bin/cli bash -c "wp config set 'WP_CONTENT_DIR' \"dirname( __FILE__ ) . '/wp-content'\" --type=constant --add --raw"
+fi
+
 
 # Install WordPress database
 bin/cli bash -c "wp core install --url=${APP_DOMAIN} --title=${APP_NAME} --admin_user=${DB_USER} --admin_password=${DB_PASSWORD} --admin_email=${ADMIN_EMAIL}"
 
-# Setup URL in config based on the environment
-bin/cli bash -c "wp config set 'WP_CONTENT_URL' ${WP_PROTOCOL}://${APP_DOMAIN}/wp-content --type=constant --add"
-bin/cli bash -c "wp config set 'WP_HOME' ${WP_PROTOCOL}://${APP_DOMAIN}/ --type=constant --add"
-bin/cli bash -c "wp config set 'WP_SITEURL' ${WP_PROTOCOL}://${APP_DOMAIN}/ --type=constant --add"
+if [ "${WP_CORE_SEPARATE}" == "true"];
+then
+  # Setup URL in config based on the environment
+  bin/cli bash -c "wp config set 'WP_CONTENT_URL' ${WP_PROTOCOL}://${APP_DOMAIN}/wp-content --type=constant --add"
+  bin/cli bash -c "wp config set 'WP_HOME' ${WP_PROTOCOL}://${APP_DOMAIN}/ --type=constant --add"
+  bin/cli bash -c "wp config set 'WP_SITEURL' ${WP_PROTOCOL}://${APP_DOMAIN}/ --type=constant --add"
+fi
 
 # flush all cache (just-in-case)
 bin/cli bash -c "wp cache flush"
