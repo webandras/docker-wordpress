@@ -12,12 +12,12 @@
     "wpackagist-theme/twentytwentyone": "^1.4"
   },
   "extra": {
-    "wordpress-install-dir": "src/wp",
+    "wordpress-install-dir": "wp",
     "installer-paths": {
-      "src/wp-content/plugins/{$name}/": [
+      "wp-content/plugins/{$name}/": [
         "type:wordpress-plugin"
       ],
-      "src/wp-content/themes/{$name}/": [
+      "wp-content/themes/{$name}/": [
         "type:wordpress-theme"
       ]
     }
