@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "${WP_CORE_SEPARATE}" == "true"];
+if [ "${WP_CORE_SEPARATE}" == "true" ];
 then
   # only for development!!!
   chmod 644 src/.htaccess
