@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ "${WP_CORE_SEPARATE}" == "true"];
+then
+  # change the owner for apache2
+  chown www-data:www-data src/wp/  -R
+else
+  chown www-data:www-data src/  -R
+fi

@@ -34,4 +34,3 @@ COPY ./conf/000-default.conf  /etc/apache2/sites-available/000-default.conf
 
 # Replace server name with our custom domain in apache2 conf
 RUN sed -i -e "s/127.0.0.1/${SERVER_NAME}/g" /etc/apache2/sites-available/000-default.conf
-

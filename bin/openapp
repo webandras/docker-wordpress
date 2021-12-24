@@ -1,5 +1,7 @@
 #!/bin/bash
+set -a
 source .env
+
 # you can not run this as root
-xdg-open http://localhost:"${WORDPRESS_PORT}"
+xdg-open "${WP_PROTOCOL}://${APP_DOMAIN}"
 exit

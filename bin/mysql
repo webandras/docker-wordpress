@@ -1,4 +1,4 @@
 #!/bin/bash
-#set -o allexport; source .env; set +o allexport
+set -a
 source .env
 docker-compose exec db bash -c "mysql -uroot -p"${DB_ROOT_PASSWORD}""

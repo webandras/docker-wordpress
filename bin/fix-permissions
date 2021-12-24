@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ "${WP_CORE_SEPARATE}" == "true"];
+then
+  # only for development!!!
+  chmod 644 src/.htaccess
+  chmod 644 src/index.php
+  chmod 644 src/wp-config.php
+
+  chmod 755 src/wp/
+  find src/wp/ -type d -exec chmod 755 {} \;  # Change directory permissions rwxr-xr-x
+  find src/wp/ -type f -exec chmod 644 {} \;  # Change file permissions rw-r--r--
+else
+  find src/ -type d -exec chmod 755 {} \;  # Change directory permissions rwxr-xr-x
+  find src/ -type f -exec chmod 644 {} \;  # Change file permissions rw-r--r--
+fi
