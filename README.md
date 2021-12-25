@@ -96,6 +96,8 @@ bin/composer install
 ```
 ! NOTICE: Installing or updating WordPress with composer returns an non-breaking error. However, plugins and themes are installed properly despite of the error. Need to be resolved.
 
+! IMPORTANT: (**wp_core_default**) -> modify WordPress installation dir from `src/wp` to `src`!
+
 ! IMPORTANT: (**wp_core_default**) -> If composer overwrites your `wp-config.php`, just replace it with the copy in `.docker/images/wordpress` folder (it loads the env vars from your .env file in `.docker` folder). This does not apply for the **wp_core_separate** case (install path is the wp folder, but the wp-config file used is in the root (customized with `bin/setup-wp` script).
 
 
@@ -142,6 +144,7 @@ Modifying files on the wp-admin can be disabled that will make changes to core, 
 bin/bash
 wp config set "DISALLOW_FILE_MODS" true --type=constant --add --raw
 ```
+
 
 
 ## MySQL database management, PhpMyAdmin
