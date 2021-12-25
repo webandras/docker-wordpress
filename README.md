@@ -3,8 +3,8 @@
 This template is made for local development only.
 
 There are 2 versions of the environment:
-- WordPress Core files moved into a separate folder (referred to as **wp_core_separate**) -> on `master-new` branch!
-- The WordPress Core files in the root folder (referred to as **wp_core_default**) -> on `master` branch!
+- Recommended: WordPress Core files moved into a separate folder (referred to as **wp_core_separate**)
+- Also works: The WordPress Core files in the root folder (referred to as **wp_core_default**)
 
 The following Docker images are included:
 - [wordpress:latest](https://hub.docker.com/_/wordpress) (apache2 webserver included)
@@ -22,11 +22,23 @@ The following Docker images are included:
 
 ### HTTPS
 
-1. Set your environment variables in `.docker/.env`, change `APP_NAME`
+Use the `master` branch which is the default!
+
+1. Set your environment variables in `.env`, change `APP_NAME`
 2. Setup ssl for your custom domain `${APP_NAME}.local`
 ```shell
 bin/setup-ssl
 ```
+You may need to make scripts in the `bin` folder, and the `.docker/images/nginx/ssl/mkcert-v1.4.3-linux-amd64` executable. For Mac or Windows you will need a different mkcert executable / installer. Links:
+
+- Windows: https://github.com/FiloSottile/mkcert#windows
+- Mac: https://github.com/FiloSottile/mkcert#macos
+- Linux: https://github.com/FiloSottile/mkcert#linux or use pre-build binaries: https://github.com/FiloSottile/mkcert/releases
+
+The supplied mkcert version is for Debian/Ubuntu.
+
+3. Modify `.docker/images/nginx/conf.d/default.conf`:
+Change `server_name` to your custom domain! It is not automatically rewritten because nginx container gets the file from volume binding.
 
 3. Add domain alias for 127.0.0.1 (e.g. `vim /etc/hosts`)
 4. Build docker project:
@@ -36,12 +48,9 @@ bin/setup-ssl
 
 5. WordPress database installation with wp-cli, import db for existing sites
 
-- For a new site run (**wp_core_default**):
-```shell
-bin/setup
-```
+To put WP core to separate folder set `WP_CORE_SEPARATE` var to `"false"`
 
-- For a new site run (**wp_core_separate**):
+- For a new site run:
 ```shell
 bin/setup-wp
 ```
