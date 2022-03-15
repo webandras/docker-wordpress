@@ -40,7 +40,7 @@ The supplied mkcert version is for Debian/Ubuntu.
 3. Modify `.docker/images/nginx/conf.d/default.conf`:
 Change `server_name` to your custom domain! It is not automatically rewritten because nginx container gets the file from volume binding.
 
-3. Add domain alias for 127.0.0.1 (e.g. `vim /etc/hosts`)
+3. Add domain alias for 127.0.0.1 (e.g. `vim /etc/hosts` for Linux)
 4. Build docker project:
 ```shell
 (set -a;source .env;docker-compose -f docker-compose-ssl.yml up --build)
@@ -126,7 +126,7 @@ wp config set "DISALLOW_FILE_MODS" true --type=constant --add --raw
 ## Customisations made to wordpress:latest image
 
 - wp-cli, and composer 2 was installed. (The official image does not have it. There is a wordpress:cli image, but it only contains the wp-cli. In this image, apache2 is also configured. This is the reason it is used here.)
-- For convenient work in the terminal, vim and nano is also installed. Use the text editor of your choice.
+- For convenient work in the terminal, vim and nano is also installed.
 - php.ini setting change for mailcatcher (you can change the email to any fake one)
 `sendmail_path = /usr/bin/env catchmail -f wordpress@local.test`
 - upload_max_filesize = 20M
@@ -166,7 +166,18 @@ bin/bash
 wp search-replace 'https://example.com' 'https://example.local' --skip-columns=guid
 ```
 
+Change 'wp_' table prefix to a custom one. Use PhpMyAdmin: select all data tables and change table prefix on the UI. [Read more](https://help.one.com/hc/en-us/articles/360002107438-Change-the-table-prefix-for-WordPress-).
+In addition, you need to update the meta_keys in these tables (there may be more keys you need to change)
+
+```sql
+update NEWPREFIX_usermeta set meta_key = 'NEWPREFIX_capabilities' where meta_key = 'OLDPREFIX_capabilities';
+update NEWPREFIX_usermeta set meta_key = 'NEWPREFIX_user_level' where meta_key = 'OLDPREFIX_user_level';
+update NEWPREFIX_usermeta set meta_key = 'NEWPREFIX_autosave_draft_ids' where meta_key = 'OLDPREFIX_autosave_draft_ids';
+update NEWPREFIX_options set option_name = 'NEWPREFIX_user_roles' where option_name = 'OLDPREFIX_user_roles';
+```
+
 PhpMyAdmin service is accessible here: http://localhost:1337
+
 
 
 ## Manage docker containers
@@ -211,6 +222,9 @@ wp core update-db
 # REPLACE domain name - very useful
 # Search and replace but skip one column
 wp search-replace 'http://example.test' 'https://example.com' --skip-columns=guid
+
+# Create a POT file for the WordPress plugin/theme into the specified directory
+wp i18n make-pot plugins/your-plugin-name plugins/your-plugin-name/languages/your-textdomain.pot
 
 # Call get_bloginfo() to get the name of the site.
 wp shell
