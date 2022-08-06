@@ -6,6 +6,8 @@ There are 2 versions of the environment:
 - Recommended: WordPress Core files moved into a separate folder (referred to as **wp_core_separate**)
 - Also works: The WordPress Core files in the root folder (referred to as **wp_core_default**)
 
+*TODO: This documentation is messy. Needs refactoring. The separate wp core folder installation will be kept only.*
+
 The following Docker images are included:
 - [wordpress:latest](https://hub.docker.com/_/wordpress) (apache2 webserver included)
 - [mysql:8.0](https://hub.docker.com/_/mysql)
