@@ -1,0 +1,48 @@
+$baseline: 1.5rem; /* 32px */
+$h1-size: 3rem;
+$h2-size: 2.2rem;
+$h3-size: 1.8rem;
+$h4-size: 1.5rem;
+$h5-size: 1.25rem;
+$h6-size: 1.1rem;
+$base-size: 16px;
+$medium-size: 0.875rem;
+$small-size: 0.75rem;
+
+.base-size {
+    font-size: $base-size;
+}
+.medium-size {
+    font-size: $medium-size;
+}
+.small-size {
+    font-size: $small-size;
+}
+
+$blue:  #375a7f !default;
+$success: #2e8b36;
+$info: #ffe7c7;
+$error: #e25555;
+
+
+.text-white {
+    color: white;
+}
+
+.bg-success {
+    padding: 1rem;
+    background: $success;
+    color: white;
+}
+
+.bg-notice {
+    padding: 1rem;
+    background: $info;
+}
+
+.bg-error {
+    padding: 1rem;
+    background: $error;
+}
+
+$base-fonts: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Tahoma, Arial, sans-serif;

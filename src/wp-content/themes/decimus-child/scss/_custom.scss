@@ -1,0 +1,249 @@
+/* Cookie bar */
+.pea_cook_wrapper p {
+    bottom: 30px !important;
+    font-size: $small-size !important;
+    margin: 0 !important;
+    font-weight: normal !important;
+}
+
+
+/* Custom form over */
+.widget {
+    margin-bottom: 0;
+
+    .wp-block-group__inner-container {
+        h2 {
+            font-size: $base-size;
+        }
+
+        a {
+            font-size: $medium-size;
+        }
+
+        ol.wp-block-latest-comments {
+            padding-left: 0;
+        }
+
+        article {
+            .wp-block-latest-comments__comment-meta {
+                font-size: $small-size;
+            }
+        }
+    }
+}
+
+.widget.widget_block,
+.widget-area section.widget {
+    margin-bottom: .5rem !important;
+}
+
+.widget.widget_block.widget_search {
+    padding-top: 0;
+}
+
+.author {
+    .author-bio {
+        h1 {
+            margin-bottom: 0;
+        }
+    }
+}
+
+
+/* Images */
+.wp-block-image .alignleft {
+    float: none !important;
+}
+
+.no-list-image {
+    list-style-image: none;
+}
+
+.profile-img {
+    margin-left: 0.5rem;
+    width: 60px;
+    height: 60px;
+}
+
+.profile-img-small,
+.avatar {
+    width: 45px;
+    height: 45px;
+}
+
+.medium-img {
+    width: 50%;
+}
+
+
+/* MODALS */
+.modal-dialog {
+    .modal-content {
+        .modal-header {
+            padding: 1rem;
+
+            h5.modal-title {
+                font-size: 1rem;
+            }
+        }
+    }
+}
+
+
+/* COMMENTS */
+.comment-form {
+    #commentsubmit {
+        padding-top: 8px !important;
+    }
+
+    .comment-form-cookies-consent {
+        .form-check-label {
+            font-size: $small-size;
+        }
+    }
+}
+
+.comment-content {
+    width: 100%;
+}
+
+.comment-respond {
+    h2 {
+        font-size: $base-size;
+    }
+}
+
+#comments {
+    h2.comments-title {
+        font-size: $base-size;
+    }
+
+    .comment {
+        h3.h5 {
+            font-size: $medium-size !important;
+            margin-bottom: 0;
+            padding-left: 0.5rem;
+        }
+
+        .comment-content {
+            .card {
+                .card-body {
+                    & > div {
+                        display: flex;
+                        align-items: center;
+                    }
+
+                    .comment-meta {
+                        time {
+                            font-size: $small-size;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+/* Notification bar */
+.wpfront-message {
+    font-size: $small-size;
+}
+
+
+ul.children {
+    margin-top: 0;
+}
+
+.no-bullets {
+    list-style-image: none !important;
+    list-style-type: none;
+    margin-left: 0;
+    padding-left: 0;
+    line-height: 1.5;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.no-underline {
+    text-decoration: none !important;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.error-404.not-found {
+    .alert {
+        width: fit-content;
+    }
+}
+
+.btn-close {
+    background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat !important;
+    opacity: .7;
+}
+
+.alert {
+    font-size: $medium-size;
+}
+
+
+.author {
+    .page-header.d-flex {
+        align-items: center;
+        margin-bottom: 0;
+    }
+}
+
+.card.horizontal {
+    .row {
+
+        @media (max-width: 992px) {
+            .card-img-left-md {
+                img {
+                    height: 340px;
+                    object-fit: cover;
+                }
+            }
+        }
+
+        @media (max-width: 768px) {
+            .card-img-left-md {
+                img {
+                    height: 340px;
+                    object-fit: cover;
+                }
+            }
+        }
+
+        @media (max-width: 576px) {
+            .card-img-left-md {
+                img {
+                    height: 210px;
+                    object-fit: cover;
+                }
+            }
+        }
+
+    }
+}
+
+.single {
+    .post-thumbnail {
+        img {
+            height: 340px;
+            object-fit: contain;
+        }
+    }
+}
+
+.tags-links {
+    a.badge {
+        font-size: $small-size;
+    }
+}
+
+

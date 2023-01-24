@@ -1,0 +1,289 @@
+body,
+html {
+    font-size: $base-size;
+    font-family: $base-fonts;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: calc(100vh - 83px);
+    text-align: left;
+    scroll-behavior: smooth;
+}
+
+body,
+p,
+blockquote,
+figure,
+figcaption {
+    margin: 0;
+    padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 700 !important;
+    margin: 2rem 0 $baseline 0;
+    line-height: 1;
+}
+
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+    text-decoration: underline;
+    font-weight: 700 !important;
+}
+
+h1,
+.h1 {
+    font-size: $h1-size;
+    margin-top: 0;
+}
+
+h2,
+.h2 {
+    font-size: $h2-size;
+}
+
+h3,
+.h3 {
+    font-size: $h3-size;
+}
+
+h4,
+.h4 {
+    font-size: $h4-size;
+}
+
+h5,
+.h5 {
+    font-size: $h5-size;
+}
+
+h6,
+.h6 {
+    font-size: $h6-size;
+}
+
+p {
+    font-size: 1rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+ol,
+ul {
+    padding-left: 1.5rem;
+    margin-top: 1rem;
+    margin-left: 0;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+}
+
+input {
+    height: 40px;
+}
+
+blockquote {
+    font-style: italic;
+    padding: 0;
+}
+
+*,
+*::after,
+*::before {
+    box-sizing: inherit;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+/* Clearfix hack to clear the floats */
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+
+table {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}
+
+table,
+th,
+td {
+    border: none;
+}
+
+figcaption {
+    margin-bottom: 1.5rem;
+    font-size: $small-size;
+    font-style: italic;
+    margin-left: 0;
+    text-align: center;
+}
+
+figure img {
+    margin-top: 1.5rem;
+}
+
+
+caption {
+    margin: 0;
+    font-size: $small-size;
+    font-style: italic;
+    text-align: center;
+}
+
+img {
+    display: block;
+    height: auto;
+    max-width: 100%;
+}
+
+
+iframe {
+    display: block;
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+th,
+td {
+    padding: 0.25rem 0.5rem;
+}
+
+
+hr {
+    margin: 0;
+}
+
+a {
+    text-decoration: underline;
+    transition: color 0.3s ease-in;
+}
+
+a:focus,
+a:hover {
+    text-decoration: none;
+}
+
+article > a {
+    text-decoration: none !important;
+}
+
+article > a:hover,
+article > a:active,
+article > a:focus {
+    text-decoration: none !important;
+}
+
+input[type="radio"] {
+    margin-top: 0;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+input[type="checkbox"] {
+    margin-top: 0;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+input,
+select,
+optgroup,
+textarea {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+fieldset {
+    padding: 0 !important;
+}
+
+.btn {
+    font-size: $medium-size !important;
+    text-transform: uppercase;
+}
+
+.btn,
+button[name="save_address"] {
+    padding: $small-size;
+}
+
+.btn.a i {
+    width: 24px;
+    height: 24px;
+}
+
+
+@media screen and (max-width: 1920px) {
+    .side-padding {
+        padding: 0 45px !important;
+    }
+}
+
+@media screen and (max-width: 1300px) {
+    .side-padding {
+        padding: 0 30px !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .side-padding {
+        padding: 0 24px !important;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .side-padding {
+        padding: 0 16px !important;
+    }
+}
+
+// a:visited {
+//   color: initial;
+// }
+
+.no-visited:visited {
+    color: #fff;
+}
+
+::-moz-selection {
+}
+
+::selection {
+}
+
+.narrow-content {
+    max-width: 1024px;
+    margin: 0 auto;
+}
+
+.container-max-width {
+    max-width: 1920px;
+    margin: 0 auto;
+}
+
+

@@ -1,0 +1,49 @@
+.navbar {
+    padding: 0 !important;
+}
+
+.navbar-nav > a {
+    padding-top: 9px;
+    padding-bottom: 9px;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.nav-pills .nav-link {
+    border-radius: 25px;
+}
+
+.breadcrumb {
+    font-size: $small-size !important;
+    margin: 0;
+    padding: 0;
+    background: transparent !important;
+    border-color: transparent !important;
+}
+
+.site-main nav.breadcrumb {
+    margin-bottom: 0;
+    font-size: $small-size;
+
+    a {
+        font-size: $small-size;
+    }
+}
+
+.breadcrumb-item + .breadcrumb-item {
+    padding-left: 0.25rem;
+}
+
+.breadcrumb-item + .breadcrumb-item::after {
+    padding-right: 0.5rem;
+}
+

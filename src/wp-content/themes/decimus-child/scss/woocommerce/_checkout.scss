@@ -1,0 +1,119 @@
+/* Checkout form */
+span.woocommerce-input-wrapper,
+.form-row {
+    display: block !important;
+    width: 100%;
+}
+
+#billing_last_name,
+#billing_first_name,
+#billing_address_1,
+#billing_email {
+    width: 100%;
+}
+
+label.form-check-label {
+    cursor: pointer;
+}
+
+button[name="save_address"] {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.bankcards {
+    width: 100px;
+    height: auto;
+    display: inline-block;
+}
+
+.form-row {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.input-narrow {
+    width: 220px;
+}
+
+.input-wide {
+    width: 280px;
+}
+
+.woocommerce-NoticeGroup.woocommerce-NoticeGroup-checkout {
+    margin-bottom: 30px;
+}
+
+.wc_payment_methods.payment_methods.methods {
+    .form-check-label {
+        font-weight: 700;
+    }
+}
+
+.woocommerce-form__label.woocommerce-form__label-for-checkbox.checkbox.form-check {
+    label {
+        font-size: $medium-size;
+        padding-left: 2px;
+        display: inline-block;
+    }
+}
+
+.woocommerce-checkout-payment.card {
+    margin-bottom: 30px;
+}
+
+#payment .payment_methods > .woocommerce-PaymentMethod > label::before,
+#payment .payment_methods > .wc_payment_method > label::before {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    vertical-align: baseline;
+    content: "\f111";
+    margin-right: 0.5407911001em;
+    -webkit-transition: color, ease, 0.2s;
+    transition: color, ease, 0.2s;
+}
+
+.woocommerce-page table.shop_table_responsive tr td::before {
+    content: none !important;
+    float: none !important;
+}
+
+/* Payment methods */
+#payment .payment_methods li.woocommerce-PaymentMethod > input[type="radio"]:first-child:checked + label::before,
+#payment .payment_methods li.wc_payment_method > input[type="radio"]:first-child:checked + label::before {
+    content: "\f192";
+}
+
+.woocommerce-billing-fields label {
+    font-weight: 700;
+    font-size: 0.875rem;
+    font-family: sans-serif;
+}
+
+.woocommerce-billing-fields > .woocommerce-billing-fields__field-wrapper > p {
+    margin-bottom: 2rem !important;
+}
+
+.checkout-button-container {
+    display: flex;
+    justify-items: center;
+
+    @media (max-width: 992px) {
+        #place_order {
+            width: fit-content;
+        }
+    }
+
+    @media (max-width: 567px) {
+        #place_order {
+            width: 100%;
+        }
+    }
+
+}
