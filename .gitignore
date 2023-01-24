@@ -23,8 +23,9 @@ ntunnel-*.php
 ### Wordpress
 src/wp
 src/wp-content/themes/*
-!src/wp-content/themes/twentytwentyone
-!src/wp-content/themes/gulacsi-bulma
+!src/wp-content/themes/twentytwentythree
+!src/wp-content/themes/decimus
+!src/wp-content/themes/decimus-child
 src/wp-content/plugins/*
 
 src/wp-content/backups-dup-lite/*
