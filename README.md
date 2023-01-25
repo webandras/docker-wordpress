@@ -27,7 +27,7 @@ The following Docker images are included:
 
 Use the `master` branch which is the default!
 
-1. Set your environment variables in `.env`, change `APP_NAME`
+1. Set your environment variables in `.env`, change `APP_NAME` (also read the 5th point below)
 2. Setup ssl for your custom domain `${APP_NAME}.local`
 
 ```shell
@@ -57,7 +57,7 @@ The supplied mkcert version is for Debian/Ubuntu.
 
 5. WordPress database installation with wp-cli, import db for existing sites
 
-To put WP core to separate folder set `WP_CORE_SEPARATE` var to `"false"`
+To put WP core to separate folder set `WP_CORE_SEPARATE` var to `"true"` (default is true)
 
 - For a new site run:
 
@@ -65,7 +65,7 @@ To put WP core to separate folder set `WP_CORE_SEPARATE` var to `"false"`
 bin/setup-wp
 ```
 
-- For an existing site, import db dump:
+- For an existing site, import db dump or use PhpMyAdmin:
 
 ```shell
 bin/mysql-import
@@ -80,7 +80,7 @@ bin/bash
 wp search-replace 'https://example.com' 'https://example.local' --skip-columns=guid
 ```
 
-Overwrite `wp-content/` with yours.
+Add your themes, plugins and other assets to `src\wp-content/`
 
 No need to change any additional files. The `wp-config.php` loads all credentials from the `.env` file. Every bash
 script in bin folder loads environment variables from `.env`.
@@ -105,11 +105,11 @@ Installation is almost the same as for https. We just need to use another docker
 1. Install composer packages (composer.json is in the `/src` folder). Run
 
 ```shell
-bin/composer install
+bin/composer update
 ```
 
 ! NOTICE: Installing or updating WordPress with composer returns an non-breaking error. However, plugins and themes are
-installed properly despite of the error. Need to be resolved.
+installed properly despite the error. Need to be resolved. -> error DISAPPEARED (2023-01-25)
 
 ! IMPORTANT: (**wp_core_default**) -> modify WordPress installation dir from `src/wp` to `src`!
 
@@ -142,7 +142,7 @@ wp config set "DISALLOW_FILE_MODS" true --type=constant --add --raw
 ## Customisations made to wordpress:latest image
 
 - wp-cli, and composer 2 was installed. (The official image does not have it. There is a wordpress:cli image, but it
-  only contains the wp-cli. In this image, apache2 is also configured. This is the reason it is used here.)
+  only contains the wp-cli. In this image, apache2 is also configured. This is the reason why it is used here.)
 - For convenient work in the terminal, vim and nano is also installed.
 - php.ini setting change for mailcatcher (you can change the email to any fake one)
   `sendmail_path = /usr/bin/env catchmail -f wordpress@local.test`
@@ -183,7 +183,7 @@ bin/bash
 wp search-replace 'https://example.com' 'https://example.local' --skip-columns=guid
 ```
 
-Change 'wp_' table prefix to a custom one. Use PhpMyAdmin: select all data tables and change table prefix on the
+Change 'wp_' table prefix to a custom one. For example, use PhpMyAdmin: select all data tables and change table prefix on the
 UI. [Read more](https://help.one.com/hc/en-us/articles/360002107438-Change-the-table-prefix-for-WordPress-).
 In addition, you need to update the meta_keys in these tables (there may be more keys you need to change)
 
