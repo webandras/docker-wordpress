@@ -1,4 +1,4 @@
 #!/bin/bash
 set -a
 source .env
-docker-compose exec db bash -c "mysql -uroot -p"${DB_ROOT_PASSWORD}""
+docker-compose exec db bash -c "mysql -uroot -p${DB_ROOT_PASSWORD}"

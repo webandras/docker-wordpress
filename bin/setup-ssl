@@ -4,7 +4,7 @@ source .env
 
 cd ./.docker/images/nginx/ssl || exit
 # generate ssl certs
-./mkcert-v1.4.3-linux-amd64 ${APP_DOMAIN}
+./mkcert-v1.4.3-linux-amd64 "${APP_DOMAIN}"
 
 cd ..
 # replace server name for the custom domain
