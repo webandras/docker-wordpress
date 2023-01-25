@@ -6,10 +6,10 @@
     }
   ],
   "require": {
-    "johnpbloch/wordpress": "^5.8.2",
-    "wpackagist-plugin/regenerate-thumbnails": "^3.1.4",
-    "wpackagist-plugin/wp-mail-smtp": "^3.2.1",
-    "wpackagist-theme/twentytwentyone": "^1.4"
+    "johnpbloch/wordpress": "6.1.1",
+    "wpackagist-plugin/regenerate-thumbnails": "3.1.5",
+    "wpackagist-plugin/wp-mail-smtp": "3.7.0",
+    "wpackagist-theme/twentytwentythree":"1.0"
   },
   "extra": {
     "wordpress-install-dir": "wp",
@@ -20,6 +20,12 @@
       "wp-content/themes/{$name}/": [
         "type:wordpress-theme"
       ]
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "johnpbloch/wordpress-core-installer": true,
+      "composer/installers": true
     }
   }
 }
