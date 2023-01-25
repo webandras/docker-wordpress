@@ -37,3 +37,5 @@ src/wp-content/uploads/*
 src/wp-content/wflogs/*
 
 src/wp-content/uploads/wc-logs/
+/src/index.php
+/src/wp-config.php
