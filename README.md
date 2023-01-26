@@ -2,12 +2,15 @@
 
 This template is made for local development only.
 
-There are 2 versions of the environment:
+WordPress Core files are moved into a separate folder in this setup.
 
-- Recommended: WordPress Core files moved into a separate folder (referred to as **wp_core_separate**)
-- Also works: The WordPress Core files in the root folder (referred to as **wp_core_default**)
+For the WordPress core, install path is `src/wp` folder, but the wp-config file used is in the root (
+customized with `bin/setup-wp` script, see later).
 
-*TODO: This documentation is messy. Needs refactoring. The separate wp core folder installation will be kept only.*
+To put WP core to separate folder set `WP_CORE_SEPARATE` env variable to `"true"` (**DO NOT change it!**)
+
+_Note: Previously, there was the option to set up WordPress the usual way (no separate wp folder), but it is removed
+now._
 
 The following Docker images are included:
 
@@ -18,16 +21,16 @@ The following Docker images are included:
 
 **Project structure:**
 
-- .docker: contains all docker-specific files and folders
-- src: the source code goes here
+- `.docker`: contains all docker-specific files and folders
+- `src`: the source code goes here
 
 ## Install a new, or setup an existing WordPress site
 
-### HTTPS
+### HTTPS install
 
 Use the `master` branch which is the default!
 
-1. Set your environment variables in `.env`, change `APP_NAME` (also read the 5th point below)
+1. Set your environment variables in `.env`, change `APP_NAME` (also read the 5th point below!)
 2. Setup ssl for your custom domain `${APP_NAME}.local`
 
 ```shell
@@ -45,33 +48,40 @@ executable. For Mac or Windows you will need a different mkcert executable / ins
 The supplied mkcert version is for Debian/Ubuntu.
 
 3. Modify `.docker/images/nginx/conf.d/default.conf`:
-   Change `server_name` to your custom domain! It is not automatically rewritten because nginx container gets the file
+   Change `server_name` to your custom domain! It is not automatically rewritten because the nginx container gets the
+   file
    from volume binding.
 
 3. Add domain alias for 127.0.0.1 (e.g. `vim /etc/hosts` for Linux)
-4. Build docker project:
+4. Build docker project (on Linux make sure to configure Docker so that you can run it without sudo privileges):
 
 ```shell
 (set -a;source .env;docker-compose -f docker-compose-ssl.yml up --build)
 ```
 
+With sudo privileges:
+
+```bash
+set -a
+source .env
+sudo -E docker-compose up --build
+```
+
 5. WordPress database installation with wp-cli, import db for existing sites
 
-To put WP core to separate folder set `WP_CORE_SEPARATE` var to `"true"` (default is true)
-
-- For a new site run:
+- For a new site run (it will set up your database and configure your site automatically):
 
 ```shell
 bin/setup-wp
 ```
 
-- For an existing site, import db dump or use PhpMyAdmin:
+- For an existing site, import sql dump or use PhpMyAdmin:
 
 ```shell
 bin/mysql-import
 ```
 
-The db dump should be placed into this folder with the same filename: `db/db.sql`
+The sql dump should be placed into this folder with the same filename: `db/db.sql`
 
 For existing sites, replace domain in database tables (enter container first with bash):
 
@@ -92,7 +102,7 @@ bin/bash
 wp user create username name@example.com --role=administrator --user_pass=Password123!
 ```
 
-### HTTP
+### HTTP install
 
 Installation is almost the same as for https. We just need to use another docker-compose file
 
@@ -108,15 +118,8 @@ Installation is almost the same as for https. We just need to use another docker
 bin/composer update
 ```
 
-! NOTICE: Installing or updating WordPress with composer returns an non-breaking error. However, plugins and themes are
-installed properly despite the error. Need to be resolved. -> error DISAPPEARED (2023-01-25)
-
-! IMPORTANT: (**wp_core_default**) -> modify WordPress installation dir from `src/wp` to `src`!
-
-! IMPORTANT: (**wp_core_default**) -> If composer overwrites your `wp-config.php`, just replace it with the copy
-in `.docker/images/wordpress` folder (it loads the env vars from your .env file in `.docker` folder). This does not
-apply for the **wp_core_separate** case (install path is the wp folder, but the wp-config file used is in the root (
-customized with `bin/setup-wp` script).
+_! NOTICE: Installing or updating WordPress with composer returns an non-breaking error. However, plugins and themes are
+installed properly despite the error. Need to be resolved. -> error DISAPPEARED (2023-01-25)_
 
 2. Add/update `wp-config.php` constants, values etc. (optional, not needed generally)
 
@@ -139,12 +142,12 @@ wp config set FS_METHOD "'direct'" --type=constant --add --raw
 wp config set "DISALLOW_FILE_MODS" true --type=constant --add --raw
 ```
 
-## Customisations made to wordpress:latest image
+## Customisations made to `wordpress:latest` image
 
-- wp-cli, and composer 2 was installed. (The official image does not have it. There is a wordpress:cli image, but it
+- wp-cli, and composer 2 was installed. (The official image does not have it. There is a `wordpress:cli` image, but it
   only contains the wp-cli. In this image, apache2 is also configured. This is the reason why it is used here.)
 - For convenient work in the terminal, vim and nano is also installed.
-- php.ini setting change for mailcatcher (you can change the email to any fake one)
+- `php.ini` setting change for mailcatcher (you can change the email to any fake one)
   `sendmail_path = /usr/bin/env catchmail -f wordpress@local.test`
 - upload_max_filesize = 20M
 
@@ -152,15 +155,28 @@ wp config set "DISALLOW_FILE_MODS" true --type=constant --add --raw
 
 Core, plugins and themes are installed/handled/updated/deleted with composer to keep track of the dependency versions.
 
-Do not update wordpress/themes/plugins with the wp-cli, because it will lead to inconsistencies in versions defined in
+Do not update packages with the wp-cli, because it will lead to inconsistencies in versions defined in
 composer.json and the actual versions installed!
 
-Modifying files on the wp-admin can be disabled that will make changes to core, themes and plugins impossible on the
-admin dashboard.
+Modifying files on the wp-admin can be disabled (using the `DISABLE_FILE_MODS` constant) that will make changes to core,
+themes and plugins impossible on the
+admin dashboard:
 
 ```bash
 bin/bash
 wp config set "DISALLOW_FILE_MODS" true --type=constant --add --raw
+```
+
+Update packages:
+
+```bash
+composer update
+```
+
+Install packages (from [WPackagist](https://wpackagist.org/)):
+
+```bash
+composer install packagename
 ```
 
 ## MySQL database management, PhpMyAdmin
@@ -170,7 +186,7 @@ wp config set "DISALLOW_FILE_MODS" true --type=constant --add --raw
 
 All sql files should be put into the `db` folder.
 
-Note: Auto-importing db dump is currently disabled. In docker-compose.yml, this is commented out:
+Note: Auto-importing db dump is currently disabled. In `docker-compose.yml`, this is commented out:
 `./db:/docker-entrypoint-initdb.d # where to find the db dump data`
 
 It is a better idea to use the `bin/mysql-import` script instead.
@@ -183,9 +199,10 @@ bin/bash
 wp search-replace 'https://example.com' 'https://example.local' --skip-columns=guid
 ```
 
-Change 'wp_' table prefix to a custom one. For example, use PhpMyAdmin: select all data tables and change table prefix on the
+Change 'wp_' table prefix to a custom one. For example, use PhpMyAdmin: select all data tables and change table prefix
+on the
 UI. [Read more](https://help.one.com/hc/en-us/articles/360002107438-Change-the-table-prefix-for-WordPress-).
-In addition, you need to update the meta_keys in these tables (there may be more keys you need to change)
+In addition, you need to update the meta_keys in these tables (there may be more keys you need to change):
 
 ```sql
 UPDATE NEWPREFIX_usermeta
@@ -204,7 +221,7 @@ WHERE option_name = 'OLDPREFIX_user_roles';
 
 PhpMyAdmin service is accessible here: `http://localhost:1337`
 
-## Manage docker containers
+## Manage docker containers / Development
 
 Make sure the host ports that are bound to our container's internal ports are not in use by another container or host
 process.
@@ -223,6 +240,11 @@ The containers need to be built for the first time:
 - Stop containers: `bin/stop`
 - Down containers (this will remove and destroy containers): `bin/down`
 - Restart containers: `bin/restart`
+
+```bash
+docker-compose down
+```
+
 
 ## Bash scripts in `bin` folder
 
@@ -268,6 +290,7 @@ wp rewrite list --format=csv
 
 
 # CONFIG
+# Shuffle the salts for the hashes:
 wp config shuffle-salts
 wp config list
 
@@ -317,3 +340,29 @@ wp theme activate
 # Get details of an installed theme
 wp theme get twentysixteen --fields=name,title,version
 ```
+
+## Deployment on shared hosting
+
+1. Create a new MySQL database
+2. Update `wp-config` with the new database credentials (dbname, username, password). The host is `"localhost"` most of
+   the time.
+3. Export your local database with PhpMyAdmin, or create a sql dump with MySQL in the terminal (for larger databases,
+   the latter is recommended). After that, import it into your live database.
+4. You have to rewrite urls and some options with your live domain name (see `src/data/rewrite-domainname.sql`). Or you
+   can also use the `wp-cli` locally, and then export your local db.
+5. Copy the content of the `src/` folder to your host through SFTP.
+6. Post-deployment: Setup SMTP, increase security (use WordFence firewall), make a backup (e.g. with Duplicator), etc.
+
+Change your salts occasionally (https://api.wordpress.org/secret-key/1.1/salt/).
+
+
+## Gitignore
+
+Make sure you never commit the .env file and wp-config.php to version control (even if it is a private repo - you may change the visibility of the repo in the future, and then it will become a vulnerability).
+It also applies to your ssl cert keys you generated with mkcert! The cert in the git repo is just an example (I already generated new cert for my local project).
+
+Update .gitignore!
+
+**Good tip: Set up GitGuardian** to get notification about potential credential leaks! I am certain that everyone has
+pushed sensitive information by accident at least one time in his/her developer life by not paying attention enough.
+
