@@ -19,4 +19,4 @@ filename="$@"
 
 docker cp "./db/$filename" "${APP_NAME}"-db:./"$filename"
 
-docker exec "${APP_NAME}"-db bash -c "mysql -uroot -p${DB_ROOT_PASSWORD} newage < $filename"
+docker exec "${APP_NAME}"-db bash -c "mysql -uroot -p${DB_ROOT_PASSWORD} ${DB_NAME} < $filename"
