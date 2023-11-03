@@ -2,7 +2,8 @@
 set -a
 source .env
 
-systemctl stop apache2
+# use if it applies to you
+#systemctl stop apache2
 
 bin/fix-permissions
 bin/fix-owner
