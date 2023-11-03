@@ -1,5 +1,5 @@
 # 
-# Installs WordPress with wp-cli (wp.cli.org) installed
+# Installs WordPress with wp-cli (wp.cli.org)
 # Docker Hub: https://registry.hub.docker.com/u/conetix/wordpress-with-wp-cli/
 # Github Repo: https://github.com/conetix/docker-wordpress-wp-cli
 
