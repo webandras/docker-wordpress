@@ -7,14 +7,15 @@ WordPress Core files are moved into a separate folder in this setup.
 For the WordPress core, install path is `src/wp` folder, but the wp-config file used is in the root (
 customized with `bin/setup-wp` script, see later).
 
-To put WP core to separate folder set `WP_CORE_SEPARATE` env variable to `"true"` (**DO NOT change it!**)
+To put WP core to separate folder set `WP_CORE_SEPARATE` env variable to `"true"` (**DO NOT change it**)
 
 _Note: Previously, there was the option to set up WordPress the usual way (no separate wp folder), but it is removed
 now._
 
 The following Docker images are included:
 
-- [wordpress:latest](https://hub.docker.com/_/wordpress) (apache2 webserver included)
+- [wordpress:php8.0-apache](https://hub.docker.com/_/wordpress)
+- [nginx:latest](https://hub.docker.com/_/nginx)
 - [mysql:8.0](https://hub.docker.com/_/mysql)
 - [phpmyadmin/phpmyadmin](https://hub.docker.com/r/phpmyadmin/phpmyadmin)
 - [sj26/mailcatcher](https://hub.docker.com/r/sj26/mailcatcher)
@@ -52,7 +53,7 @@ The supplied mkcert version is for Debian/Ubuntu.
    file
    from volume binding.
 
-3. Add domain alias for 127.0.0.1 (e.g. `vim /etc/hosts` for Linux)
+3. Add domain alias for 127.0.0.1 (e.g. `nano /etc/hosts` for Linux)
 4. Build docker project (on Linux make sure to configure Docker so that you can run it without sudo privileges):
 
 ```shell
@@ -75,13 +76,26 @@ sudo -E docker-compose up --build
 bin/setup-wp
 ```
 
-- For an existing site, import sql dump or use PhpMyAdmin:
+- For an existing site, import sql dump or use PhpMyAdmin (however, the latter is not suitable for importing large db dumps):
 
 ```shell
 bin/mysql-import
 ```
 
 The sql dump should be placed into this folder with the same filename: `db/db.sql`
+
+Make sure to have the correct database name in the comments of the sql dump. Example:
+
+```sql
+-- MySQL dump 10.13  Distrib 8.0.31, for Linux (x86_64)
+--
+-- Host: localhost    Database: testdbname
+--
+-- Current Database: `testdbname`
+--
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `testdbname` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `testdbname`;
+```
 
 For existing sites, replace domain in database tables (enter container first with bash):
 
@@ -112,7 +126,7 @@ Installation is almost the same as for https. We just need to use another docker
 
 ## Configure WordPress local site
 
-1. Install composer packages (composer.json is in the `/src` folder). Run
+1. Install/update composer packages (composer.json is in the `/src` folder). Run
 
 ```shell
 bin/composer update
@@ -142,7 +156,7 @@ wp config set FS_METHOD "'direct'" --type=constant --add --raw
 wp config set "DISALLOW_FILE_MODS" true --type=constant --add --raw
 ```
 
-## Customisations made to `wordpress:latest` image
+## Customisations made to `wordpress` image
 
 - wp-cli, and composer 2 was installed. (The official image does not have it. There is a `wordpress:cli` image, but it
   only contains the wp-cli. In this image, apache2 is also configured. This is the reason why it is used here.)
