@@ -2,4 +2,21 @@
 set -a
 source .env
 
-docker-compose exec db bash -c "mysql -hdb -uroot -p${DB_ROOT_PASSWORD} ${DB_NAME} < ./db/db.sql"
+# IMPORTANT!
+# Make sure to have the correct database name in the comments of the sql dump!
+# Example:
+#-- MySQL dump 10.13  Distrib 8.0.31, for Linux (x86_64)
+#--
+#-- Host: localhost    Database: testdbname
+#--
+#-- Current Database: `testdbname`
+#--
+#CREATE DATABASE /*!32312 IF NOT EXISTS*/ `testdbname` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+#USE `testdbname`;
+
+# The argument is the filename: 'dump_2023_11_03.sql' (must be in the ./db folder of your project root)
+filename="$@"
+
+docker cp "./db/$filename" "${APP_NAME}"-db:./"$filename"
+
+docker exec "${APP_NAME}"-db bash -c "mysql -uroot -p${DB_ROOT_PASSWORD} newage < $filename"
