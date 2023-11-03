@@ -6,11 +6,11 @@
     }
   ],
   "require": {
-    "johnpbloch/wordpress": "6.1.1",
-    "wpackagist-plugin/regenerate-thumbnails": "3.1.5",
-    "wpackagist-plugin/wp-mail-smtp": "3.7.0",
-    "wpackagist-plugin/woocommerce":"7.3.0",
-    "wpackagist-theme/twentytwentythree":"1.0"
+    "johnpbloch/wordpress": "6.3.2",
+    "wpackagist-plugin/regenerate-thumbnails": "3.1.6",
+    "wpackagist-plugin/wp-mail-smtp": "3.9.0",
+    "wpackagist-plugin/woocommerce": "8.2.1",
+    "wpackagist-theme/twentytwentythree":"1.2"
   },
   "require-dev": {
     "scssphp/scssphp": "1.11"
