@@ -3,7 +3,7 @@
 # Docker Hub: https://registry.hub.docker.com/u/conetix/wordpress-with-wp-cli/
 # Github Repo: https://github.com/conetix/docker-wordpress-wp-cli
 
-FROM wordpress:latest
+FROM wordpress:php8.0-apache
 ARG BASEDIR
 # required build arg for apache2 configuration
 ARG SERVER_NAME
