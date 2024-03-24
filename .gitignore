@@ -2,8 +2,8 @@
 .idea
 *.iml
 
-# Only test credentials inside
-#.env
+# Environment files
+.env
 
 ### Composer
 src/composer.phar
@@ -19,12 +19,19 @@ db/*
 
 ### Docker
 ntunnel-*.php
+/.docker/images/nginx/ssl/*.pem
 
 ### Wordpress
+/src/index.php
+/src/.htaccess
+/src/wp-config.php
 src/wp
 src/wp-content/themes/*
+
+# exceptions
 !src/wp-content/themes/decimus
 !src/wp-content/themes/decimus-child
+
 src/wp-content/plugins/*
 
 src/wp-content/backups-dup-lite/*
@@ -36,6 +43,5 @@ src/wp-content/uploads/*
 # wordfence logs
 src/wp-content/wflogs/*
 
+# woocommerce logs
 src/wp-content/uploads/wc-logs/
-/src/index.php
-/src/wp-config.php
