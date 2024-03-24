@@ -25,6 +25,7 @@ The following Docker images are included:
 - `.docker`: contains all docker-specific files and folders
 - `src`: the source code goes here
 
+
 ## Install a new, or setup an existing WordPress site
 
 ### HTTPS install
@@ -39,28 +40,21 @@ bin/setup-ssl
 ```
 
 You may need to make scripts in the `bin` folder, and the `.docker/images/nginx/ssl/mkcert-v1.4.3-linux-amd64`
-executable. For Mac or Windows you will need a different mkcert executable / installer. Links:
-
-- Windows: https://github.com/FiloSottile/mkcert#windows
-- Mac: https://github.com/FiloSottile/mkcert#macos
-- Linux: https://github.com/FiloSottile/mkcert#linux or use pre-build
-  binaries: https://github.com/FiloSottile/mkcert/releases
+executable (https://github.com/FiloSottile/mkcert/releases).
 
 The supplied mkcert version is for Debian/Ubuntu.
 
-3. Modify `.docker/images/nginx/conf.d/default.conf`:
-   Change `server_name` to your custom domain! It is not automatically rewritten because the nginx container gets the
-   file
-   from volume binding.
+3. Modify `.docker/images/nginx/conf.d/default.conf`: Change `server_name` to your custom domain (`${APP_NAME}.local`)!
 
-3. Add domain alias for 127.0.0.1 (e.g. `nano /etc/hosts` for Linux)
-4. Build docker project (on Linux make sure to configure Docker so that you can run it without sudo privileges):
+4. Add domain alias for 127.0.0.1 (e.g. `nano /etc/hosts` for Linux)
+
+5. Build docker project (on Linux make sure to configure Docker so that you can run it without sudo privileges):
 
 ```shell
 (set -a;source .env;docker-compose -f docker-compose-ssl.yml up --build)
 ```
 
-With sudo privileges:
+With sudo privileges (not recommended):
 
 ```bash
 set -a
@@ -70,13 +64,14 @@ sudo -E docker-compose up --build
 
 5. WordPress database installation with wp-cli, import db for existing sites
 
-- For a new site run (it will set up your database and configure your site automatically):
+- For a new site run this command (it will set up your database and configure your site automatically):
 
 ```shell
 bin/setup-wp
 ```
 
-- For an existing site, import sql dump or use PhpMyAdmin (however, the latter is not suitable for importing large db dumps):
+- For an existing site, import sql dump or use PhpMyAdmin (however, the latter is not suitable for importing large
+  database sql dumps):
 
 ```shell
 bin/mysql-import
@@ -93,8 +88,10 @@ Make sure to have the correct database name in the comments of the sql dump. Exa
 --
 -- Current Database: `testdbname`
 --
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `testdbname` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `testdbname`;
+CREATE
+DATABASE /*!32312 IF NOT EXISTS*/ `testdbname` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE
+`testdbname`;
 ```
 
 For existing sites, replace domain in database tables (enter container first with bash):
@@ -104,7 +101,7 @@ bin/bash
 wp search-replace 'https://example.com' 'https://example.local' --skip-columns=guid
 ```
 
-Add your themes, plugins and other assets to `src\wp-content/`
+**Add your themes, plugins and other assets to `src\wp-content/`**
 
 No need to change any additional files. The `wp-config.php` loads all credentials from the `.env` file. Every bash
 script in bin folder loads environment variables from `.env`.
@@ -116,13 +113,15 @@ bin/bash
 wp user create username name@example.com --role=administrator --user_pass=Password123!
 ```
 
+
 ### HTTP install
 
-Installation is almost the same as for https. We just need to use another docker-compose file
+Installation is almost the same as for https. We just need to use another docker-compose file for the build:
 
 ```shell
 (set -a;source .env;docker-compose -f docker-compose.yml up --build)
 ```
+
 
 ## Configure WordPress local site
 
@@ -156,6 +155,7 @@ wp config set FS_METHOD "'direct'" --type=constant --add --raw
 wp config set "DISALLOW_FILE_MODS" true --type=constant --add --raw
 ```
 
+
 ## Customisations made to `wordpress` image
 
 - wp-cli, and composer 2 was installed. (The official image does not have it. There is a `wordpress:cli` image, but it
@@ -164,6 +164,7 @@ wp config set "DISALLOW_FILE_MODS" true --type=constant --add --raw
 - `php.ini` setting change for mailcatcher (you can change the email to any fake one)
   `sendmail_path = /usr/bin/env catchmail -f wordpress@local.test`
 - upload_max_filesize = 20M
+
 
 ## Composer
 
@@ -184,14 +185,9 @@ wp config set "DISALLOW_FILE_MODS" true --type=constant --add --raw
 Update packages:
 
 ```bash
-composer update
+bin/composer update
 ```
 
-Install packages (from [WPackagist](https://wpackagist.org/)):
-
-```bash
-composer install packagename
-```
 
 ## MySQL database management, PhpMyAdmin
 
@@ -235,6 +231,7 @@ WHERE option_name = 'OLDPREFIX_user_roles';
 
 PhpMyAdmin service is accessible here: `http://localhost:1337`
 
+
 ## Manage docker containers / Development
 
 Make sure the host ports that are bound to our container's internal ports are not in use by another container or host
@@ -262,7 +259,8 @@ docker-compose down
 
 ## Bash scripts in `bin` folder
 
-Useful and makes it faster to run common tasks. Check them out.
+Useful and makes it faster to run some common tasks. Check them out.
+
 
 ## Useful WP CLI commands
 
@@ -355,28 +353,65 @@ wp theme activate
 wp theme get twentysixteen --fields=name,title,version
 ```
 
+
 ## Deployment on shared hosting
 
 1. Create a new MySQL database
-2. Update `wp-config` with the new database credentials (dbname, username, password). The host is `"localhost"` most of
+2. Update `wp-config` with the new database credentials (database name, username, password). The host is `"localhost"`
+   most of
    the time.
 3. Export your local database with PhpMyAdmin, or create a sql dump with MySQL in the terminal (for larger databases,
    the latter is recommended). After that, import it into your live database.
-4. You have to rewrite urls and some options with your live domain name (see `src/data/rewrite-domainname.sql`). Or you
-   can also use the `wp-cli` locally, and then export your local db.
+4. You have to rewrite the urls and some options with your live domain name (see `src/data/rewrite-domainname.sql`). Or,
+   you
+   can also use the `wp-cli` locally, and then export your local database (and rewrite them back to the local ones
+   afterward).
 5. Copy the content of the `src/` folder to your host through SFTP.
-6. Post-deployment: Setup SMTP, increase security (use WordFence firewall), make a backup (e.g. with Duplicator), etc.
+6. Post-deployment: Setup SMTP, increase security (use WordFence firewall), etc.
 
-Change your salts occasionally (https://api.wordpress.org/secret-key/1.1/salt/).
+Occasionally, change your [salts](https://api.wordpress.org/secret-key/1.1/salt/) used for hashing.
 
 
-## Gitignore
+## .gitignore file
 
-Make sure you never commit the .env file and wp-config.php to version control (even if it is a private repo - you may change the visibility of the repo in the future, and then it will become a vulnerability).
-It also applies to your ssl cert keys you generated with mkcert! The cert in the git repo is just an example (I already generated new cert for my local project).
+Make sure you never commit the .env file and wp-config.php to version control. It also applies to your ssl
+certificate keys you generated with mkcert!
 
-Update .gitignore!
+These ignore rules are already added to `.gitignore`.
 
-**Good tip: Set up GitGuardian** to get notification about potential credential leaks! I am certain that everyone has
-pushed sensitive information by accident at least one time in his/her developer life by not paying attention enough.
+**Good tip: Set up GitGuardian** to get notification about potential credential leaks.
+
+
+## Mailcatcher for local e-mail testing
+
+1. See the `mailcatcher` in the docker-compose files.
+
+2. Install `"wpackagist-plugin/wp-mail-smtp":"4.0.1"` with Composer inside the WordPress service if you don't have it:
+   `bin/composer require "wpackagist-plugin/wp-mail-smtp":"4.0.1"`.
+
+3. Configure SMTP:
+
+Setup "from address", and "name". Choose the "Other SMTP" option.
+Set these:
+
+- SMTP Host: **mailcatcher**
+- SMTP Port: **1025**
+
+No need for encryption.
+Auto TLS -> Off.
+Authentication -> None.
+
+4. Send out a test email (Tools menu point under WP Mail SMTP).
+
+5. Access Mailcatcher UI at `localhost:1080`
+
+Generally, there is no need to configure anything else if you followed the instructions, or you didn't make other
+changes. See the PHP section on the [mailcatcher website](https://mailcatcher.me/), or in
+the [PHP documentation](https://www.php.net/manual/en/mail.configuration.php#ini.sendmail-path) for more info.
+
+This is the `php.ini` file location inside the **wordpress** container: `/usr/local/etc/php`. This file is copied here
+from `.docker/images/wordpress/php.ini-development`.
+
+This is the default setting for `sendmail_path`:
+`sendmail_path = /usr/bin/env catchmail -f wordpress@local.test`
 
