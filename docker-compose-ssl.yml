@@ -40,6 +40,14 @@ services:
       - WORDPRESS_DEBUG=true
     volumes:
       - ./src:/var/www/html:cached
+    # Point the IP of the Nginx container to the WordPress site URL to make the loopback work
+    # https://devops.stackexchange.com/questions/12957/wordpress-site-health-errors-when-using-docker-and-nginx
+    # Use the bridge network's IP address instead:
+    # 172.17.0.1 -> docker network inspect -v bridge
+    extra_hosts:
+      - localhost:172.17.0.1
+      - wptest.local:172.17.0.1
+      - host.docker.internal:host-gateway
 
 
   nginx:

@@ -41,8 +41,14 @@ services:
       - WORDPRESS_DB_PASSWORD=${DB_PASSWORD} # matches the password set in the db container
       - WORDPRESS_DB_NAME=${DB_NAME}
       - WORDPRESS_DEBUG=true
+    # Point the IP of the Nginx container to the WordPress site URL to make the loopback work
+    # https://devops.stackexchange.com/questions/12957/wordpress-site-health-errors-when-using-docker-and-nginx
+    # Use the bridge network's IP address instead:
+    # 172.17.0.1 -> docker network inspect -v bridge
     extra_hosts:
-     - "${APP_NAME}.local:127.0.0.1"
+      - localhost:172.17.0.1
+      - "${APP_NAME}.local:127.0.0.1"
+      - host.docker.internal:host-gateway
     hostname: ${APP_NAME}.local
     domainname: local 
     volumes:
