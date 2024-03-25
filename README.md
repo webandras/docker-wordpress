@@ -415,3 +415,20 @@ from `.docker/images/wordpress/php.ini-development`.
 This is the default setting for `sendmail_path`:
 `sendmail_path = /usr/bin/env catchmail -f wordpress@local.test`
 
+### Possible issues with catchmail
+
+**/usr/bin/env: 'catchmail': No such file or directory**
+
+You can try to change the setting to this ([source](https://wesamly.wordpress.com/2015/10/27/mailcatcher-error-env-catchmail-no-such-file-or-directory/)):
+`sendmail_path = /usr/bin/env /usr/local/bin/catchmail -f some@example.com`
+
+Or you can use mhsendmail as an alternative with this setting:
+`sendmail_path = /usr/local/bin/mhsendmail`
+
+[msendmail install instructions.](https://github.com/SalsaBoy990/docker-wordpress/issues/4#issuecomment-2016944122)
+
+
+## License, credits
+
+MIT License
+Copyright (c) 2021-2023 András Gulácsi
