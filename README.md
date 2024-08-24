@@ -14,11 +14,15 @@ now._
 
 The following Docker images are included:
 
-- [wordpress:php8.0-apache](https://hub.docker.com/_/wordpress)
+- [wordpress:php8.2-apache](https://hub.docker.com/_/wordpress)
 - [nginx:latest](https://hub.docker.com/_/nginx)
 - [mysql:8.0](https://hub.docker.com/_/mysql)
 - [phpmyadmin/phpmyadmin](https://hub.docker.com/r/phpmyadmin/phpmyadmin)
-- [sj26/mailcatcher](https://hub.docker.com/r/sj26/mailcatcher)
+- [sj26/mailcatcher:v0.10.0](https://hub.docker.com/r/sj26/mailcatcher)
+
+
+Change your docker PHP version in: `.docker/images/wordpress/Dockerfile`, or `.docker/images/wordpress/Dockerfile-ssl`.
+It works with 8.0, 8.1 as well. WordPress 6.6 [already supports PHP 8.2]((https://make.wordpress.org/core/handbook/references/php-compatibility-and-wordpress-versions/)) (with possible exceptions)
 
 **Project structure:**
 
@@ -131,7 +135,7 @@ Installation is almost the same as for https. We just need to use another docker
 bin/composer update
 ```
 
-_! NOTICE: Installing or updating WordPress with composer returns an non-breaking error. However, plugins and themes are
+_! NOTICE: Installing or updating WordPress with composer returns a non-breaking error. However, plugins and themes are
 installed properly despite the error. Need to be resolved. -> error DISAPPEARED (2023-01-25)_
 
 2. Add/update `wp-config.php` constants, values etc. (optional, not needed generally)
@@ -372,9 +376,9 @@ wp theme get twentysixteen --fields=name,title,version
 Occasionally, change your [salts](https://api.wordpress.org/secret-key/1.1/salt/) used for hashing.
 
 
-## .gitignore file
+## Update .gitignore file!
 
-Make sure you never commit the .env file and wp-config.php to version control. It also applies to your ssl
+Make sure you NEVER commit the .env file and wp-config.php to version control. It also applies to your ssl
 certificate keys you generated with mkcert!
 
 These ignore rules are already added to `.gitignore`.
